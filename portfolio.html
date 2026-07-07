@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Adeola Yusuff — Field Notes on Technology & Nature</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,400;0,500;0,700;1,400;1,500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --parchment:#f9f5ee;--paper:#f3ede1;--forest:#1a3308;--grove:#2d5016;
+  --sage:#5c8c2a;--herb:#8fbc5a;--earth:#8b7355;--bark:#5c3d1e;--wheat:#c8a97e;
+  --white:#fff;--text:#1e3010;--text-muted:rgba(30,48,16,0.52);
+  --text-faint:rgba(30,48,16,0.3);--border:rgba(44,74,30,0.1);
+  --border-strong:rgba(44,74,30,0.2);--radius:10px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{font-family:'Inter',sans-serif;font-size:15px;background:var(--parchment);color:var(--text);-webkit-font-smoothing:antialiased;overflow-x:hidden;}
+a{color:inherit;text-decoration:none;}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);border:0;}
+
+/* ===== NAV ===== */
+nav{position:fixed;top:0;width:100%;z-index:100;padding:0 40px;height:60px;display:flex;align-items:center;justify-content:space-between;backdrop-filter:blur(12px);background:rgba(26,51,8,0.85);border-bottom:1px solid rgba(255,255,255,0.06);transition:all .3s;}
+.nav-logo{font-family:'Playfair Display',serif;font-size:16px;color:#fff;letter-spacing:-0.01em;font-weight:700;}
+.nav-logo span{color:var(--herb);}
+.nav-links{display:flex;gap:28px;align-items:center;}
+.nav-links a{font-size:13px;color:rgba(255,255,255,0.55);font-weight:500;letter-spacing:0.01em;transition:color .15s;}
+.nav-links a:hover{color:#fff;}
+.nav-cta{padding:7px 16px;background:var(--sage);color:#fff;border-radius:5px;font-size:13px;font-weight:600;transition:background .15s;}
+.nav-cta:hover{background:var(--herb);}
+
+/* ===== HERO ===== */
+.hero{min-height:100vh;background:var(--forest);position:relative;overflow:hidden;display:flex;align-items:center;padding:0 40px;}
+.hero::after{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 30% 60%,rgba(92,140,42,0.12) 0%,transparent 60%);pointer-events:none;}
+.hero-content{max-width:580px;position:relative;z-index:2;}
+.hero-eyebrow{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:0.18em;color:var(--herb);margin-bottom:20px;display:flex;align-items:center;gap:8px;}
+.hero-eyebrow::before{content:'';width:24px;height:1px;background:var(--herb);}
+.hero-name{font-family:'Playfair Display',serif;font-size:clamp(48px,7vw,80px);font-weight:700;color:#fff;letter-spacing:-0.03em;line-height:0.95;margin-bottom:20px;}
+.hero-name em{font-style:italic;color:var(--herb);}
+.hero-tagline{font-size:16px;color:rgba(255,255,255,0.55);line-height:1.7;max-width:440px;margin-bottom:28px;}
+.hero-pills{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:36px;}
+.hero-pill{padding:5px 13px;border-radius:99px;font-size:12px;font-weight:500;border:0.5px solid rgba(143,188,90,0.35);color:rgba(255,255,255,0.6);}
+.hero-pill.bright{background:rgba(143,188,90,0.15);border-color:rgba(143,188,90,0.5);color:var(--herb);}
+.hero-ctas{display:flex;gap:12px;flex-wrap:wrap;}
+.hero-btn{padding:12px 24px;border-radius:6px;font-size:14px;font-weight:600;border:none;cursor:pointer;font-family:'Inter',sans-serif;transition:all .15s;}
+.hero-btn.primary{background:var(--herb);color:var(--forest);}
+.hero-btn.primary:hover{background:#a8d476;}
+.hero-btn.ghost{background:rgba(255,255,255,0.07);color:rgba(255,255,255,0.7);border:1px solid rgba(255,255,255,0.15);}
+.hero-btn.ghost:hover{background:rgba(255,255,255,0.12);color:#fff;}
+/* botanical plant SVG */
+.hero-plant{position:absolute;right:8%;top:50%;transform:translateY(-50%);width:300px;opacity:0.7;}
+@media(max-width:900px){.hero-plant{display:none;}}
+
+/* ===== SECTIONS ===== */
+section{padding:90px 40px;}
+.section-max{max-width:1180px;margin:0 auto;}
+.section-eyebrow{font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:0.18em;color:var(--sage);margin-bottom:10px;display:flex;align-items:center;gap:8px;}
+.section-eyebrow::before{content:'';width:20px;height:1px;background:var(--sage);}
+.section-title{font-family:'Playfair Display',serif;font-size:clamp(32px,4.5vw,48px);font-weight:700;color:var(--text);letter-spacing:-0.025em;line-height:1.05;margin-bottom:16px;}
+.section-title em{font-style:italic;color:var(--grove);}
+
+/* ===== ABOUT ===== */
+.about{background:var(--paper);}
+.about-inner{display:grid;grid-template-columns:1fr 1.2fr;gap:80px;align-items:start;}
+.about-left{position:sticky;top:100px;}
+.field-note{background:var(--white);border:0.5px solid var(--border-strong);border-radius:4px;padding:22px;margin-top:28px;position:relative;box-shadow:2px 3px 8px rgba(44,74,30,0.06);}
+.field-note::before{content:'FIELD NOTE';font-size:8.5px;font-weight:700;letter-spacing:0.16em;color:var(--earth);position:absolute;top:-10px;left:14px;background:var(--paper);padding:0 6px;}
+.field-note-date{font-size:11px;color:var(--text-faint);margin-bottom:8px;font-family:'Playfair Display',serif;font-style:italic;}
+.field-note-text{font-size:13px;color:var(--text-muted);line-height:1.7;}
+.stat-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:20px;}
+.stat-box{background:var(--parchment);border:0.5px solid var(--border);border-radius:6px;padding:14px;border-top:2px solid var(--herb);}
+.stat-val{font-size:26px;font-weight:900;color:var(--forest);letter-spacing:-.04em;}
+.stat-label{font-size:10.5px;color:var(--text-muted);text-transform:uppercase;letter-spacing:.07em;margin-top:4px;}
+.about-right p{font-size:15.5px;line-height:1.85;color:var(--text-muted);margin-bottom:20px;}
+.about-right p strong{color:var(--text);font-weight:600;}
+.about-right p em{font-style:italic;color:var(--grove);}
+blockquote{border-left:3px solid var(--herb);padding:12px 18px;margin:24px 0;font-family:'Playfair Display',serif;font-size:18px;font-style:italic;color:var(--grove);line-height:1.5;}
+
+/* ===== PROJECTS ===== */
+.projects{background:var(--parchment);}
+.projects-label{font-size:12px;color:var(--text-muted);margin-bottom:40px;max-width:540px;line-height:1.7;}
+.projects-featured{display:grid;grid-template-columns:repeat(2,1fr);gap:18px;margin-bottom:18px;}
+.project-card{background:var(--white);border:0.5px solid var(--border-strong);border-radius:var(--radius);overflow:hidden;transition:transform .2s,box-shadow .2s;display:flex;flex-direction:column;}
+.project-card:hover{transform:translateY(-4px);box-shadow:0 12px 40px rgba(44,74,30,0.1);}
+.pc-header{background:var(--forest);padding:22px 22px 18px;position:relative;overflow:hidden;}
+.pc-header::after{content:'';position:absolute;bottom:-20px;right:-20px;width:80px;height:80px;border-radius:50%;background:rgba(143,188,90,0.1);}
+.pc-specimen{font-size:8.5px;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;color:rgba(255,255,255,0.3);margin-bottom:6px;}
+.pc-emoji{font-size:36px;display:block;margin-bottom:10px;}
+.pc-name{font-family:'Playfair Display',serif;font-size:20px;font-weight:700;color:#fff;letter-spacing:-0.01em;}
+.pc-latin{font-family:'Playfair Display',serif;font-style:italic;font-size:12px;color:rgba(255,255,255,0.38);margin-top:2px;}
+.pc-body{padding:18px 22px;flex:1;display:flex;flex-direction:column;}
+.pc-desc{font-size:13px;color:var(--text-muted);line-height:1.65;margin-bottom:14px;flex:1;}
+.pc-tags{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:16px;}
+.pc-tag{font-size:10.5px;font-weight:500;padding:3px 9px;border-radius:99px;background:rgba(44,74,30,0.07);color:var(--grove);}
+.pc-link{display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:600;color:var(--sage);transition:gap .15s;}
+.pc-link:hover{gap:10px;}
+.projects-secondary{display:grid;grid-template-columns:repeat(2,1fr);gap:18px;}
+.project-card.secondary .pc-header{background:var(--grove);}
+.project-card.secondary .pc-name{font-size:17px;}
+
+/* ===== SKILLS (Botanical Taxonomy) ===== */
+.skills{background:var(--paper);}
+.skills-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:18px;margin-top:40px;}
+.skill-card{background:var(--white);border:0.5px solid var(--border);border-radius:var(--radius);padding:22px;position:relative;}
+.skill-card::before{content:attr(data-kingdom);font-size:8px;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;color:var(--wheat);position:absolute;top:-9px;left:16px;background:var(--white);padding:0 6px;}
+.skill-category{font-family:'Playfair Display',serif;font-size:15px;font-weight:700;color:var(--forest);margin-bottom:14px;padding-bottom:10px;border-bottom:0.5px solid var(--border);}
+.skill-items{display:flex;flex-direction:column;gap:9px;}
+.skill-row{display:flex;align-items:center;justify-content:space-between;}
+.skill-name{font-size:13px;color:var(--text-muted);}
+.skill-bar{width:100px;height:4px;background:rgba(44,74,30,0.08);border-radius:2px;overflow:hidden;}
+.skill-fill{height:100%;border-radius:2px;background:linear-gradient(90deg,var(--sage),var(--herb));transform-origin:left;}
+.skill-pct{font-size:11px;font-weight:600;color:var(--text-faint);width:28px;text-align:right;}
+
+/* ===== EXPERIENCE ===== */
+.experience{background:var(--parchment);}
+.timeline{margin-top:44px;position:relative;}
+.timeline::before{content:'';position:absolute;left:0;top:6px;bottom:6px;width:1px;background:var(--border-strong);}
+.tl-item{display:flex;gap:28px;margin-bottom:36px;padding-left:24px;position:relative;}
+.tl-item::before{content:'';position:absolute;left:-5px;top:6px;width:11px;height:11px;border-radius:50%;background:var(--herb);border:2px solid var(--parchment);box-shadow:0 0 0 1px var(--herb);}
+.tl-date{font-size:11.5px;font-weight:600;color:var(--sage);white-space:nowrap;padding-top:2px;min-width:80px;}
+.tl-content{}
+.tl-org{font-family:'Playfair Display',serif;font-size:16px;font-weight:700;color:var(--forest);margin-bottom:2px;}
+.tl-role{font-size:12.5px;color:var(--sage);font-weight:600;margin-bottom:6px;}
+.tl-desc{font-size:13px;color:var(--text-muted);line-height:1.65;}
+.tl-tag{display:inline-block;font-size:10px;font-weight:600;padding:2px 8px;border-radius:99px;background:rgba(44,74,30,0.08);color:var(--grove);margin-top:8px;margin-right:4px;}
+
+/* ===== CONTACT ===== */
+.contact{background:var(--forest);padding:90px 40px;}
+.contact-inner{max-width:700px;margin:0 auto;text-align:center;}
+.contact .section-eyebrow{justify-content:center;}
+.contact .section-eyebrow::before{display:none;}
+.contact .section-title{color:#fff;}
+.contact .section-title em{color:var(--herb);}
+.contact-sub{font-size:16px;color:rgba(255,255,255,0.5);line-height:1.7;margin-bottom:36px;max-width:480px;margin-left:auto;margin-right:auto;}
+.contact-links{display:flex;justify-content:center;gap:16px;flex-wrap:wrap;}
+.contact-link{padding:12px 24px;border-radius:6px;font-size:14px;font-weight:600;transition:all .15s;display:inline-flex;align-items:center;gap:8px;}
+.contact-link.primary{background:var(--herb);color:var(--forest);}
+.contact-link.primary:hover{background:#a8d476;}
+.contact-link.ghost{background:rgba(255,255,255,0.08);color:rgba(255,255,255,0.7);border:1px solid rgba(255,255,255,0.14);}
+.contact-link.ghost:hover{background:rgba(255,255,255,0.13);color:#fff;}
+.contact-note{margin-top:40px;font-size:12px;color:rgba(255,255,255,0.22);font-family:'Playfair Display',serif;font-style:italic;}
+
+/* ===== FOOTER ===== */
+footer{background:rgba(0,0,0,0.3);border-top:1px solid rgba(255,255,255,0.05);padding:20px 40px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;background-color:#0f1e08;}
+footer p{font-size:12px;color:rgba(255,255,255,0.25);}
+
+/* ===== SCROLL REVEAL ===== */
+.reveal{opacity:0;transform:translateY(24px);transition:opacity .65s ease,transform .65s ease;}
+.reveal.visible{opacity:1;transform:translateY(0);}
+
+/* ===== RESPONSIVE ===== */
+@media(max-width:900px){
+  nav{padding:0 20px;}
+  .nav-links{display:none;}
+  section{padding:60px 20px;}
+  .about-inner{grid-template-columns:1fr;}
+  .about-left{position:static;}
+  .projects-featured,.projects-secondary,.skills-grid{grid-template-columns:1fr;}
+  .hero{padding:80px 20px 60px;}
+  .contact{padding:60px 20px;}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav aria-label="Main navigation">
+  <a href="#" class="nav-logo" aria-label="Adeola Yusuff homepage">AY. <span>/ Field Notes</span></a>
+  <div class="nav-links">
+    <a href="#about">About</a>
+    <a href="#projects">Projects</a>
+    <a href="#skills">Skills</a>
+    <a href="#experience">Experience</a>
+    <a href="#contact" class="nav-cta">Get in touch</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero" aria-labelledby="hero-name">
+
+  <!-- Botanical SVG -->
+  <svg class="hero-plant" viewBox="0 0 280 480" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <style>
+      .stem{stroke-dasharray:600;stroke-dashoffset:600;animation:draw 2.2s ease forwards;}
+      .leaf1{stroke-dasharray:200;stroke-dashoffset:200;animation:draw 1.2s .6s ease forwards;}
+      .leaf2{stroke-dasharray:200;stroke-dashoffset:200;animation:draw 1.2s .9s ease forwards;}
+      .leaf3{stroke-dasharray:180;stroke-dashoffset:180;animation:draw 1.2s 1.2s ease forwards;}
+      .leaf4{stroke-dasharray:180;stroke-dashoffset:180;animation:draw 1.2s 1.5s ease forwards;}
+      .flower{stroke-dasharray:300;stroke-dashoffset:300;animation:draw 1.5s 1.8s ease forwards;}
+      @keyframes draw{to{stroke-dashoffset:0;}}
+    </style>
+    <!-- Main stem -->
+    <path class="stem" d="M140 470 C140 470 135 380 138 320 C141 260 132 200 140 140 C148 80 136 50 140 20" stroke="rgba(143,188,90,0.6)" stroke-width="2.5" stroke-linecap="round"/>
+    <!-- Leaves left -->
+    <path class="leaf1" d="M138 340 C100 320 68 290 72 260 C76 230 120 248 138 280" stroke="rgba(143,188,90,0.5)" stroke-width="1.8" stroke-linecap="round" fill="none"/>
+    <path class="leaf3" d="M139 220 C98 195 70 160 78 132 C86 104 128 128 139 165" stroke="rgba(143,188,90,0.4)" stroke-width="1.8" stroke-linecap="round" fill="none"/>
+    <!-- Leaves right -->
+    <path class="leaf2" d="M142 290 C182 268 218 240 212 210 C206 180 163 200 142 238" stroke="rgba(143,188,90,0.5)" stroke-width="1.8" stroke-linecap="round" fill="none"/>
+    <path class="leaf4" d="M141 170 C185 148 220 115 210 88 C200 60 158 86 141 124" stroke="rgba(143,188,90,0.4)" stroke-width="1.8" stroke-linecap="round" fill="none"/>
+    <!-- Flower head -->
+    <circle class="flower" cx="140" cy="28" r="18" stroke="rgba(143,188,90,0.45)" stroke-width="1.5" fill="rgba(143,188,90,0.06)"/>
+    <circle class="flower" cx="140" cy="28" r="8" stroke="rgba(200,169,126,0.5)" stroke-width="1.5" fill="rgba(200,169,126,0.08)"/>
+    <!-- Dots -->
+    <circle cx="138" cy="340" r="3" fill="rgba(143,188,90,0.4)" style="animation:draw .3s .6s ease forwards;opacity:0;"/>
+    <circle cx="142" cy="290" r="3" fill="rgba(143,188,90,0.4)" style="animation:draw .3s .9s ease forwards;opacity:0;"/>
+    <circle cx="139" cy="220" r="3" fill="rgba(143,188,90,0.4)" style="animation:draw .3s 1.2s ease forwards;opacity:0;"/>
+    <circle cx="141" cy="170" r="3" fill="rgba(143,188,90,0.4)" style="animation:draw .3s 1.5s ease forwards;opacity:0;"/>
+  </svg>
+
+  <div class="hero-content">
+    <div class="hero-eyebrow">Field Notes · London, UK</div>
+    <h1 class="hero-name" id="hero-name">
+      Adeola<br><em>Yusuff</em>
+    </h1>
+    <p class="hero-tagline">Building technology that understands the natural world. Business Computing student. AgriTech developer. Someone who thinks wildflowers and data structures are both about finding patterns.</p>
+    <div class="hero-pills">
+      <span class="hero-pill bright">🌿 AgriTech</span>
+      <span class="hero-pill bright">🌱 Environmental Systems</span>
+      <span class="hero-pill">KPMG ×2</span>
+      <span class="hero-pill">PwC</span>
+      <span class="hero-pill">Lloyds Bank</span>
+      <span class="hero-pill">Axxdea. Founder</span>
+    </div>
+    <div class="hero-ctas">
+      <a href="#projects" class="hero-btn primary">View field work →</a>
+      <a href="#contact" class="hero-btn ghost">Get in touch</a>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section class="about" id="about" aria-labelledby="about-title">
+  <div class="section-max">
+    <div class="about-inner">
+      <div class="about-left reveal">
+        <div class="section-eyebrow">Field Notes No. 001</div>
+        <h2 class="section-title" id="about-title">On systems,<br><em>natural and otherwise</em></h2>
+        <div class="field-note">
+          <div class="field-note-date">Dagenham, London · Summer 2026</div>
+          <div class="field-note-text">Observer: A. Yusuff, BSc Business Computing (Yr 2), Birkbeck.<br>Subject: The unexpected intersection of ecological and computational systems.</div>
+        </div>
+        <div class="stat-row">
+          <div class="stat-box"><div class="stat-val">94%</div><div class="stat-label">Data Structures & Algorithms</div></div>
+          <div class="stat-box"><div class="stat-val">93%</div><div class="stat-label">Systems Analysis & Design</div></div>
+        </div>
+      </div>
+      <div class="about-right reveal">
+        <p>I'm a Business Computing student at Birkbeck, London, with early experience at <strong>KPMG, PwC and Lloyds Bank</strong> and a founder's perspective from running <em>Axxdea.</em> — a small digital products business I built alongside my studies.</p>
+        <p>I came to environmental technology the way most genuine interests arrive: gradually, then all at once. A semester studying systems analysis. A summer actually growing tomatoes. The dawning realisation that <strong>an ecosystem and a well-designed software system have more in common than most people notice</strong> — feedback loops, emergent behaviour, the fragility that comes from over-optimising one variable at the expense of everything else.</p>
+        <blockquote>"What would software look like if it was built for ecosystems rather than just about them?"</blockquote>
+        <p>That question drives the work I'm building now. Garden management systems. Ecological monitoring dashboards. Databases of wild plants. Tools for people who want to understand the natural world with the same rigour they'd apply to a business problem.</p>
+        <p>I'm also pragmatic: I have strong frontend skills, genuine Big Four experience, and a systems analysis grade that I'm proud of. I'm looking for roles where <em>all of that</em> is useful — AgriTech, environmental consulting, sustainability technology, or anything at that intersection.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section class="projects" id="projects" aria-labelledby="projects-title">
+  <div class="section-max">
+    <div class="section-eyebrow">Specimen Collection</div>
+    <h2 class="section-title" id="projects-title">Field <em>projects</em></h2>
+    <p class="projects-label">Four production-ready tools built at the intersection of computing and ecology — plus two broader technical pieces showing range. Every project is a single HTML file, deployable to GitHub Pages, built entirely in HTML, CSS and JavaScript.</p>
+
+    <!-- Primary botanical projects -->
+    <div class="projects-featured" role="list">
+      <div class="project-card reveal" role="listitem">
+        <div class="pc-header">
+          <div class="pc-specimen">Specimen 001 · Operations Systems</div>
+          <span class="pc-emoji">🌿</span>
+          <div class="pc-name">Garden OS</div>
+          <div class="pc-latin">Horticultural Management System</div>
+        </div>
+        <div class="pc-body">
+          <p class="pc-desc">A full garden operations system with six working modules: plant inventory, watering schedule, pest and disease log, harvest tracker, and seed store. All data persists in localStorage. Seeded with realistic growing data — Cherry Roma, Hidcote Lavender, Cambridge Favourite Strawberry. Shows CRUD, localStorage, Chart.js and genuine domain knowledge in one place.</p>
+          <div class="pc-tags">
+            <span class="pc-tag">HTML</span><span class="pc-tag">CSS</span><span class="pc-tag">JavaScript</span><span class="pc-tag">Chart.js</span><span class="pc-tag">localStorage</span><span class="pc-tag">6 Modules</span>
+          </div>
+          <a href="https://ade180.github.io/Garden-OS/" target="_blank" rel="noopener" class="pc-link">View in the field →</a>
+        </div>
+      </div>
+
+      <div class="project-card reveal" role="listitem">
+        <div class="pc-header">
+          <div class="pc-specimen">Specimen 002 · Environmental Data</div>
+          <span class="pc-emoji">🌍</span>
+          <div class="pc-name">Ecosystem Health Monitor</div>
+          <div class="pc-latin">Biodiversitatis Systematis Monitor</div>
+        </div>
+        <div class="pc-body">
+          <p class="pc-desc">An executive dashboard for ecological monitoring data — biodiversity index trends, species distribution, water quality and pollinator activity visualised with Chart.js. Seeded with South London green corridor data including a live species register of 20 monitored species. Habitat and season filters. Dark, dramatic design that takes environmental data seriously.</p>
+          <div class="pc-tags">
+            <span class="pc-tag">HTML</span><span class="pc-tag">CSS</span><span class="pc-tag">JavaScript</span><span class="pc-tag">Chart.js</span><span class="pc-tag">Dark Mode</span><span class="pc-tag">Live Filters</span>
+          </div>
+          <a href="https://ade180.github.io/Ecosystem-Dashboard/" target="_blank" rel="noopener" class="pc-link">View in the field →</a>
+        </div>
+      </div>
+
+      <div class="project-card reveal" role="listitem">
+        <div class="pc-header">
+          <div class="pc-specimen">Specimen 003 · Growth Observation</div>
+          <span class="pc-emoji">🌱</span>
+          <div class="pc-name">Plant Growth Logger</div>
+          <div class="pc-latin">Incrementum Observatorum</div>
+        </div>
+        <div class="pc-body">
+          <p class="pc-desc">A mobile-first tracking tool for logging plant measurements over time. Add a plant, record weekly height readings and health observations, watch the growth curve build in Chart.js. Seeded with three real specimen tracking journals — Cherry Tomato, Genovese Basil, Giant Sunflower — from sowing to current season. Export the chart as a PNG.</p>
+          <div class="pc-tags">
+            <span class="pc-tag">HTML</span><span class="pc-tag">CSS</span><span class="pc-tag">JavaScript</span><span class="pc-tag">Chart.js</span><span class="pc-tag">Mobile-first</span><span class="pc-tag">Export PNG</span>
+          </div>
+          <a href="https://ade180.github.io/Plant-Growth-Logger/" target="_blank" rel="noopener" class="pc-link">View in the field →</a>
+        </div>
+      </div>
+
+      <div class="project-card reveal" role="listitem">
+        <div class="pc-header">
+          <div class="pc-specimen">Specimen 004 · Botanical Database</div>
+          <span class="pc-emoji">🍃</span>
+          <div class="pc-name">UK Foraging Database</div>
+          <div class="pc-latin">Flora Britannica Comestibilis</div>
+        </div>
+        <div class="pc-body">
+          <p class="pc-desc">A searchable, filterable field reference for 20 UK native and edible plants. Filter by season, habitat, edibility and pollinator value. Each entry includes identification notes, harvest timing, preparation, safety warnings and pollinator impact — written from primary sources. Modal detail view. Feels like a field guide that also happens to be a web app.</p>
+          <div class="pc-tags">
+            <span class="pc-tag">HTML</span><span class="pc-tag">CSS</span><span class="pc-tag">JavaScript</span><span class="pc-tag">Search & Filter</span><span class="pc-tag">20 Species</span><span class="pc-tag">Field Guide</span>
+          </div>
+          <a href="https://ade180.github.io/Foraging-Database-/" target="_blank" rel="noopener" class="pc-link">View in the field →</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Secondary technical projects -->
+    <p style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.14em;color:var(--text-faint);margin-bottom:14px;">Technical Foundation</p>
+    <div class="projects-secondary" role="list">
+      <div class="project-card secondary reveal" role="listitem">
+        <div class="pc-header">
+          <span class="pc-emoji" style="font-size:26px;">🏢</span>
+          <div class="pc-name">Operations OS</div>
+          <div class="pc-latin">9-module business management system</div>
+        </div>
+        <div class="pc-body">
+          <p class="pc-desc">Full internal company system — employees, holidays, expenses, CRM, projects, meetings, KPI charts and reports. Demonstrates CRUD, approval flows, Chart.js and search at scale.</p>
+          <div class="pc-tags"><span class="pc-tag">9 Modules</span><span class="pc-tag">localStorage</span><span class="pc-tag">Chart.js</span></div>
+          <a href="https://ade180.github.io/ops/" target="_blank" rel="noopener" class="pc-link">View project →</a>
+        </div>
+      </div>
+      <div class="project-card secondary reveal" role="listitem">
+        <div class="pc-header">
+          <span class="pc-emoji" style="font-size:26px;">📊</span>
+          <div class="pc-name">Analytics Dashboard</div>
+          <div class="pc-latin">Executive business intelligence tool</div>
+        </div>
+        <div class="pc-body">
+          <p class="pc-desc">Power BI–style dashboard with CSV upload, 4 Chart.js charts, dark/light mode, date range filter and PDF export. Looks like Stripe or Linear.</p>
+          <div class="pc-tags"><span class="pc-tag">Chart.js</span><span class="pc-tag">CSV Upload</span><span class="pc-tag">Dark Mode</span></div>
+          <a href="https://ade180.github.io/Analytics-dashboard/" target="_blank" rel="noopener" class="pc-link">View project →</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section class="skills" id="skills" aria-labelledby="skills-title">
+  <div class="section-max">
+    <div class="section-eyebrow">Taxonomy</div>
+    <h2 class="section-title" id="skills-title">A <em>classification</em><br>of capabilities</h2>
+    <div class="skills-grid">
+      <div class="skill-card reveal" data-kingdom="Kingdom: Technical">
+        <div class="skill-category">Frontend Development</div>
+        <div class="skill-items">
+          <div class="skill-row"><span class="skill-name">HTML & CSS</span><div class="skill-bar"><div class="skill-fill" style="width:95%"></div></div><span class="skill-pct">95%</span></div>
+          <div class="skill-row"><span class="skill-name">JavaScript</span><div class="skill-bar"><div class="skill-fill" style="width:82%"></div></div><span class="skill-pct">82%</span></div>
+          <div class="skill-row"><span class="skill-name">Chart.js & Data Viz</span><div class="skill-bar"><div class="skill-fill" style="width:78%"></div></div><span class="skill-pct">78%</span></div>
+          <div class="skill-row"><span class="skill-name">Responsive Design</span><div class="skill-bar"><div class="skill-fill" style="width:85%"></div></div><span class="skill-pct">85%</span></div>
+          <div class="skill-row"><span class="skill-name">GitHub Pages</span><div class="skill-bar"><div class="skill-fill" style="width:88%"></div></div><span class="skill-pct">88%</span></div>
+        </div>
+      </div>
+      <div class="skill-card reveal" data-kingdom="Kingdom: Business">
+        <div class="skill-category">Business Analysis & Systems</div>
+        <div class="skill-items">
+          <div class="skill-row"><span class="skill-name">Systems Analysis & Design</span><div class="skill-bar"><div class="skill-fill" style="width:93%"></div></div><span class="skill-pct">93%</span></div>
+          <div class="skill-row"><span class="skill-name">Requirements Gathering</span><div class="skill-bar"><div class="skill-fill" style="width:80%"></div></div><span class="skill-pct">80%</span></div>
+          <div class="skill-row"><span class="skill-name">Process Mapping</span><div class="skill-bar"><div class="skill-fill" style="width:75%"></div></div><span class="skill-pct">75%</span></div>
+          <div class="skill-row"><span class="skill-name">Data Structures (Algorithms)</span><div class="skill-bar"><div class="skill-fill" style="width:94%"></div></div><span class="skill-pct">94%</span></div>
+          <div class="skill-row"><span class="skill-name">Python</span><div class="skill-bar"><div class="skill-fill" style="width:68%"></div></div><span class="skill-pct">68%</span></div>
+        </div>
+      </div>
+      <div class="skill-card reveal" data-kingdom="Kingdom: Environmental">
+        <div class="skill-category">Environmental Technology</div>
+        <div class="skill-items">
+          <div class="skill-row"><span class="skill-name">Horticultural Systems</span><div class="skill-bar"><div class="skill-fill" style="width:72%"></div></div><span class="skill-pct">72%</span></div>
+          <div class="skill-row"><span class="skill-name">Ecological Data Interpretation</span><div class="skill-bar"><div class="skill-fill" style="width:65%"></div></div><span class="skill-pct">65%</span></div>
+          <div class="skill-row"><span class="skill-name">Botanical Identification</span><div class="skill-bar"><div class="skill-fill" style="width:60%"></div></div><span class="skill-pct">60%</span></div>
+          <div class="skill-row"><span class="skill-name">Biodiversity Monitoring</span><div class="skill-bar"><div class="skill-fill" style="width:55%"></div></div><span class="skill-pct">55%</span></div>
+          <div class="skill-row"><span class="skill-name">AgriTech Tools</span><div class="skill-bar"><div class="skill-fill" style="width:58%"></div></div><span class="skill-pct">58%</span></div>
+        </div>
+      </div>
+      <div class="skill-card reveal" data-kingdom="Kingdom: Commercial">
+        <div class="skill-category">Commercial & Operations</div>
+        <div class="skill-items">
+          <div class="skill-row"><span class="skill-name">Digital Product Building</span><div class="skill-bar"><div class="skill-fill" style="width:82%"></div></div><span class="skill-pct">82%</span></div>
+          <div class="skill-row"><span class="skill-name">Stakeholder Communication</span><div class="skill-bar"><div class="skill-fill" style="width:78%"></div></div><span class="skill-pct">78%</span></div>
+          <div class="skill-row"><span class="skill-name">Office Administration</span><div class="skill-bar"><div class="skill-fill" style="width:90%"></div></div><span class="skill-pct">90%</span></div>
+          <div class="skill-row"><span class="skill-name">SQL</span><div class="skill-bar"><div class="skill-fill" style="width:62%"></div></div><span class="skill-pct">62%</span></div>
+          <div class="skill-row"><span class="skill-name">Networking</span><div class="skill-bar"><div class="skill-fill" style="width:89%"></div></div><span class="skill-pct">89%</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EXPERIENCE -->
+<section class="experience" id="experience" aria-labelledby="exp-title">
+  <div class="section-max">
+    <div class="section-eyebrow">Growth Rings</div>
+    <h2 class="section-title" id="exp-title">How I <em>got here</em></h2>
+    <div class="timeline" role="list">
+      <div class="tl-item reveal" role="listitem">
+        <div class="tl-date">2024 – now</div>
+        <div class="tl-content">
+          <div class="tl-org">Birkbeck, University of London</div>
+          <div class="tl-role">BSc Business Computing · Year 2</div>
+          <div class="tl-desc">94% in Data Structures & Algorithms. 93% in Systems Analysis & Design II. 89% in Computer Networking. Currently applying computing skills to environmental and agricultural problems.</div>
+          <span class="tl-tag">Academic</span>
+        </div>
+      </div>
+      <div class="tl-item reveal" role="listitem">
+        <div class="tl-date">2025 – now</div>
+        <div class="tl-content">
+          <div class="tl-org">Axxdea.</div>
+          <div class="tl-role">Founder · Digital Products Business</div>
+          <div class="tl-desc">Built and run a live digital products business selling Notion templates and email automation kits via Payhip. Shows I can take an idea from concept to paying customers alongside a full-time degree.</div>
+          <span class="tl-tag">Entrepreneurial</span><span class="tl-tag">Commercial</span>
+        </div>
+      </div>
+      <div class="tl-item reveal" role="listitem">
+        <div class="tl-date">Feb 2022</div>
+        <div class="tl-content">
+          <div class="tl-org">Lloyds Bank</div>
+          <div class="tl-role">Cybersecurity & Inclusion Placement</div>
+          <div class="tl-desc">Led a seminar on workplace equality and inclusion for the intern cohort. Gained insight into how one of the UK's largest institutions approaches digital security and risk management.</div>
+          <span class="tl-tag">Finance</span><span class="tl-tag">Cybersecurity</span>
+        </div>
+      </div>
+      <div class="tl-item reveal" role="listitem">
+        <div class="tl-date">Aug 2021</div>
+        <div class="tl-content">
+          <div class="tl-org">PwC</div>
+          <div class="tl-role">Emerging Technology & Python</div>
+          <div class="tl-desc">Worked across AI, sustainability and advanced Python modules. Early exposure to how the Big Four approach technology consulting, and how Python intersects with data and emerging tech strategy.</div>
+          <span class="tl-tag">Consulting</span><span class="tl-tag">Python</span><span class="tl-tag">AI</span>
+        </div>
+      </div>
+      <div class="tl-item reveal" role="listitem">
+        <div class="tl-date">Feb 2020</div>
+        <div class="tl-content">
+          <div class="tl-org">KPMG · Canary Wharf</div>
+          <div class="tl-role">Web Development Placement</div>
+          <div class="tl-desc">Built and shipped live website pages in HTML, CSS and JavaScript — code that went into production on KPMG's actual web presence. First real experience of what professional frontend development looks like at scale.</div>
+          <span class="tl-tag">Web Development</span><span class="tl-tag">Big Four</span>
+        </div>
+      </div>
+      <div class="tl-item reveal" role="listitem">
+        <div class="tl-date">May 2019</div>
+        <div class="tl-content">
+          <div class="tl-org">KPMG · Canary Wharf</div>
+          <div class="tl-role">First Placement</div>
+          <div class="tl-desc">Initial exposure to Big Four working culture and professional technology environments. Returned the following year — which is the only meaningful endorsement any first placement can give you.</div>
+          <span class="tl-tag">Big Four</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section class="contact" id="contact" aria-labelledby="contact-title">
+  <div class="contact-inner">
+    <div class="section-eyebrow">Field Office</div>
+    <h2 class="section-title" id="contact-title">Let's <em>talk</em></h2>
+    <p class="contact-sub">I'm looking for roles in AgriTech, environmental technology, sustainability consulting or anywhere computing meets the natural world. If you're building something interesting in this space, I'd genuinely like to hear about it.</p>
+    <div class="contact-links">
+      <a href="mailto:adeolafy@gmail.com" class="contact-link primary">📧 adeolafy@gmail.com</a>
+      <a href="https://www.linkedin.com/in/adeola-yusuff-6391841aa/?lipi=urn%3Ali%3Apage%3Ad_flagship3_profile_view_base_contact_details%3BjHxbk29LT0Wy4vfJxRQ4KA%3D%3D" target="_blank" rel="noopener" class="contact-link ghost">LinkedIn →</a>
+      <a href="https://payhip.com/Axxdea" target="_blank" rel="noopener" class="contact-link ghost">Axxdea →</a>
+    </div>
+    <p class="contact-note">Also genuinely happy to talk about plants, foraging, ecosystems, or the ethics of precision agriculture.</p>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <p>🌿 Adeola Yusuff · Business Computing, Birkbeck · London</p>
+  <p>Built in HTML, CSS & JavaScript · Deployed on GitHub Pages</p>
+</footer>
+
+<script>
+// Scroll reveal
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if(e.isIntersecting){ e.target.classList.add('visible'); observer.unobserve(e.target); } });
+}, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+// Stagger reveal items
+document.querySelectorAll('.tl-item.reveal, .project-card.reveal, .skill-card.reveal').forEach((el, i) => {
+  el.style.transitionDelay = (i * 0.09) + 's';
+});
+</script>
+</body>
+</html>
